@@ -9,6 +9,8 @@ var app = express();
 
 var router = express.Router();
 
+require("./config/routes.js")(router);
+
 app.use(express.static(__dirname + "/public"));
 
 app.engine("handlebars", expressHandlebars({
@@ -23,7 +25,8 @@ app.use(bodyParser.urlencoded({
 app.use(router);
 
 // If deployed, use the deployed database, otherwise use the local database
-var db = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines"
+var db = "mongodb://localhost/mongoHeadlines"
+// process.env.MONGODB_URI || 
 
 mongoose.connect(db, function(err) {
   if (err) return console.log(err);
