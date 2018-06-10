@@ -1,24 +1,29 @@
 $(document).ready(function() {
+
+  console.log("Welcome to the Home page!");
+
   var articleContainer = $(".article-container");
-  //onclick, save
+  //onclick for save button
   $(document).on("click", ".scrape-new", scrapeArticle);
 
   initPage();
 
   function initPage() {
     articleContainer.empty();
-    $.get("/api/headlines?saved=false")
+    $.get("/api/headlines")
       .then(function(data) {
+        console.log(data);
         if (data && data.length) {
           renderArticles(data);
         }
-        else {
-          renderEmpty();
-        }
+        // else {
+        //   renderEmpty();
+        // }
       });
   }
 
   function renderArticles(articles) {
+    // $(".scrape-result").text("");
     var articlePanels = [];
     for (var i in articles) {
       articlePanels.push(createPanel(articles[i]));
@@ -27,14 +32,15 @@ $(document).ready(function() {
   }
 
   function renderEmpty() {
-    console.log("empty");
+    // $(".scrape-result").text("");
   }
 
   function createPanel(article) {
     var panel = $(`
     <div>
-      <h3>article.headline</h3>
-      <h5>article.summary</h5>
+      <h3>${article.headline}</h3>
+      <p>${article.summary}...</p>
+      <a href="${article.link}" target="_blank">Click to read more!</a>
     </div>
     `);
     panel.data("_id", article._id);
@@ -45,8 +51,8 @@ $(document).ready(function() {
     $.get("/api/fetch")
       .then(function(data) {
         initPage();
-        //bootbox.alert("")
+        alert(data.message);
         console.log(data.message);
       });
   }
-})
+});

@@ -9,7 +9,7 @@ module.exports = {
       var articles = data;
       for (var i in articles) {
         articles[i].date = "sometime";
-        articles[i].saved = "false";
+        articles[i].saved = 'false';
       }
       Headline.collection.insertMany(articles, {ordered: false}, function(err, docs) {
         cb(err, docs);
@@ -20,8 +20,10 @@ module.exports = {
   get: function(query, cb) {
     Headline
     .find(query)
-    .sort({_id: -1})
+    .sort({_id: 1})
     .exec(function(err, doc) {cb(doc);});
   },
-  //update
+  update: function(query, cb) {
+    Headline.update({_id: query._id}, {$set: query}, {}, cb);
+  }
 }
